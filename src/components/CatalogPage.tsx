@@ -140,8 +140,7 @@ export default function CatalogPage() {
   const [showBanner, setShowBanner] = useState(true);
 
   return (
-    <div className="min-h-screen flex justify-center bg-[#f2f3f7]">
-      <div className="relative w-full max-w-[390px] bg-white min-h-screen flex flex-col">
+    <div className="min-h-screen bg-white flex flex-col">
 
         {/* Sticky NavBar only */}
         <div className="sticky top-0 z-40 bg-white">
@@ -234,7 +233,6 @@ export default function CatalogPage() {
         </main>
 
         <Tabbar />
-      </div>
     </div>
   );
 }

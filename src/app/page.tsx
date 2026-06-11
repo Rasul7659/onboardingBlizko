@@ -14,8 +14,7 @@ export default function Home() {
   const [showCarousel, setShowCarousel] = useState(true);
 
   return (
-    <div className="min-h-screen flex justify-center bg-[#f2f3f7]">
-      <div className="relative w-full max-w-[390px] bg-white min-h-screen flex flex-col">
+    <div className="min-h-screen bg-white flex flex-col">
         {/* Sticky header */}
         <div className="sticky top-0 z-40 bg-white">
           <Header />
@@ -38,7 +37,6 @@ export default function Home() {
         </main>
 
         <Tabbar />
-      </div>
     </div>
   );
 }

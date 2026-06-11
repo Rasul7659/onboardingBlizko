@@ -76,7 +76,7 @@ export default function Tabbar() {
 
   return (
     <div
-      className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[390px] z-50"
+      className="fixed bottom-0 left-0 right-0 w-full z-50"
       style={{ backdropFilter: "blur(20px)", backgroundColor: "rgba(255,255,255,0.9)" }}
     >
       <div className="h-px bg-[#e2e5eb]" />

@@ -4,15 +4,22 @@ import { useState, useRef, useEffect, useCallback } from "react";
 
 // ─── Constants ───────────────────────────────────────────────────────────────
 
-// Figma source is 375px wide; implementation targets 390px — all sizes scaled ×(390/375).
-const DEPTHS = [
-  { width: 340, height: 232, top: 0  },  // back
-  { width: 349, height: 238, top: 9  },  // middle
-  { width: 357, height: 243, top: 20 },  // front
-] as const;
-
 const SWIPE_THRESHOLD = 80;
 const FLY_MS = 380;
+
+// Card proportions derived from Figma (375px canvas, 16px side padding)
+// front width = innerW, middle = front×(349/357), back = front×(340/357)
+// height ≈ width × 0.681, top offsets ≈ innerW × (9/357) and (20/357)
+const ASPECT = 243 / 357;
+function buildDepths(vw: number) {
+  const innerW = vw - 32; // 16px padding each side
+  const fw = innerW;
+  return [
+    { width: Math.round(fw * (340 / 357)), height: Math.round(fw * (340 / 357) * ASPECT), top: 0 },
+    { width: Math.round(fw * (349 / 357)), height: Math.round(fw * (349 / 357) * ASPECT), top: Math.round(fw * (9 / 357)) },
+    { width: fw,                           height: Math.round(fw * ASPECT),                top: Math.round(fw * (20 / 357)) },
+  ] as const;
+}
 
 type Phase = "idle" | "dragging" | "fly-left" | "fly-right";
 
@@ -130,6 +137,16 @@ function getDepth(cardIdx: number, topIdx: number, total: number): 0 | 1 | 2 {
 // ─── Main component ───────────────────────────────────────────────────────────
 
 export default function PromoCarousel({ onClose }: { onClose?: () => void }) {
+  const [vw, setVw] = useState(390);
+  useEffect(() => {
+    const update = () => setVw(window.innerWidth);
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, []);
+
+  const DEPTHS = buildDepths(vw);
+
   const [cards] = useState(ALL_CARDS.map(c => c.id));
   const [topIdx, setTopIdx] = useState(0);
   const [phase, setPhase] = useState<Phase>("idle");
@@ -202,8 +219,8 @@ export default function PromoCarousel({ onClose }: { onClose?: () => void }) {
   }, [phase, advance]);
 
   const effectiveTop = topIdx % cards.length;
-  const frontDepth = 2 as const;
-  const containerHeight = DEPTHS[frontDepth].top + DEPTHS[frontDepth].height; // 254
+  const frontDepth = 2;
+  const containerHeight = DEPTHS[frontDepth].top + DEPTHS[frontDepth].height;
 
   const dragProgress = phase === "dragging"
     ? Math.min(Math.abs(dragOffset.x) / 120, 1)
