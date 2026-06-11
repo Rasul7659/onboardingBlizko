@@ -15,14 +15,14 @@ export default function CategorySection({ section }: Props) {
       </h2>
       {hasWide ? (
         // Mixed layout: wide (2-col) + square (1-col) cards
-        <div className="grid grid-cols-3 gap-2 auto-rows-[109px]">
+        <div className="grid grid-cols-3 md:grid-cols-4 gap-2 auto-rows-[109px] md:auto-rows-[140px]">
           {section.cards.map((card) => (
             <CategoryCard key={card.label} {...card} />
           ))}
         </div>
       ) : (
-        // Equal 3-column layout
-        <div className="grid grid-cols-3 gap-2">
+        // Equal columns layout
+        <div className="grid grid-cols-3 md:grid-cols-4 gap-2 auto-rows-[109px] md:auto-rows-[140px]">
           {section.cards.map((card) => (
             <CategoryCard key={card.label} {...card} />
           ))}

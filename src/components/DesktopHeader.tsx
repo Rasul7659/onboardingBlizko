@@ -142,46 +142,50 @@ export default function DesktopHeader() {
           }}
         >
           <CatalogIcon />
-          <span style={{ fontSize: 16, fontWeight: 500, color: "white", fontFamily: "Inter, system-ui, sans-serif", whiteSpace: "nowrap" }}>
+          <span style={{
+            fontSize: 18, fontWeight: 500, color: "white",
+            fontFamily: "'PP Right Grotesk', 'Arial', system-ui, sans-serif",
+            letterSpacing: "0.36px",
+            whiteSpace: "nowrap",
+          }}>
             Каталог
           </span>
         </button>
 
-        {/* Search input */}
+        {/* Search bar — teal outer, white inner input, icon at right */}
         <div
           className="flex-1 flex items-center"
           style={{
-            height: 58,
+            backgroundColor: "#00b0b8",
             border: "2px solid #00b0b8",
             borderRadius: 12,
-            backgroundColor: "white",
-            padding: "0 2px 0 16px",
+            gap: 24,
+            padding: "2px 24px 2px 2px",
           }}
         >
-          <input
-            className="flex-1 outline-none bg-transparent"
+          {/* White inner input */}
+          <div
+            className="flex-1 flex items-center"
             style={{
-              fontSize: 16, color: "#15252b",
-              fontFamily: "Inter, system-ui, sans-serif",
-            }}
-            placeholder="Урбеч из миндаля"
-          />
-          <button
-            className="shrink-0 flex items-center justify-center"
-            style={{
-              width: 42, height: 42,
-              backgroundColor: "#00b0b8",
+              backgroundColor: "white",
               borderRadius: 10,
-              border: "none",
-              cursor: "pointer",
-              marginRight: 2,
+              padding: "16px 24px",
             }}
           >
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-              <circle cx="9" cy="9" r="5.5" stroke="white" strokeWidth="1.8"/>
-              <path d="M13.5 13.5L17.5 17.5" stroke="white" strokeWidth="1.8" strokeLinecap="round"/>
-            </svg>
-          </button>
+            <input
+              className="flex-1 outline-none bg-transparent"
+              style={{
+                fontSize: 16, color: "#838383",
+                fontFamily: "Inter, system-ui, sans-serif",
+              }}
+              placeholder="Урбеч из миндаля"
+            />
+          </div>
+          {/* Search icon 24×24 on teal background */}
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style={{ flexShrink: 0 }}>
+            <circle cx="11" cy="11" r="6.5" stroke="white" strokeWidth="1.8"/>
+            <path d="M16.5 16.5L21 21" stroke="white" strokeWidth="1.8" strokeLinecap="round"/>
+          </svg>
         </div>
       </div>
 

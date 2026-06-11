@@ -241,39 +241,12 @@ export default function PromoCarousel({ onClose, desktop }: { onClose?: () => vo
 
   return (
     <div ref={containerRef} style={desktop ? {} : { padding: "0 16px" }}>
-      {/* overflow:hidden clips cards during swipe, borderRadius clips at rounded corners */}
-      <div style={{
-        borderRadius: 20,
-        overflow: "hidden",
-        position: "relative",
-      }}>
-        {/* Close button — top-right corner of gray block */}
-        <button
-          style={{
-            position: "absolute",
-            top: 0,
-            right: 0,
-            width: 41,
-            height: 41,
-            borderRadius: "0 20px 0 20px",
-            backgroundColor: "#15252b",
-            border: "none",
-            cursor: "pointer",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            padding: 0,
-            zIndex: 10,
-          }}
-          onClick={() => onClose?.()}
-        >
-          <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
-            <path d="M1 1L9 9M9 1L1 9" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
-          </svg>
-        </button>
-
-        {/* Carousel container — cards center via left:50% translateX(-50%) */}
-        <div style={{ position: "relative", height: containerHeight }}>
+      {/* Relative wrapper so close button can overlap the carousel */}
+      <div style={{ position: "relative" }}>
+        {/* overflow:hidden clips cards during swipe */}
+        <div style={{ borderRadius: 20, overflow: "hidden" }}>
+          {/* Carousel container — cards center via left:50% translateX(-50%) */}
+          <div style={{ position: "relative", height: containerHeight }}>
             {cards.map((cardId, stackPos) => {
               const cardDef = ALL_CARDS.find(c => c.id === cardId)!;
               const { bg, Content } = cardDef;
@@ -345,6 +318,32 @@ export default function PromoCarousel({ onClose, desktop }: { onClose?: () => vo
             })}
           </div>
         </div>
+
+        {/* Close button — OUTSIDE overflow:hidden, overlaps top-right corner of carousel */}
+        <button
+          style={{
+            position: "absolute",
+            top: 0,
+            right: 0,
+            width: 56,
+            height: 56,
+            borderRadius: "0 20px 0 20px",
+            backgroundColor: "#15252b",
+            border: "none",
+            cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: 0,
+            zIndex: 10,
+          }}
+          onClick={() => onClose?.()}
+        >
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+            <path d="M1 1L11 11M11 1L1 11" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
+          </svg>
+        </button>
+      </div>
     </div>
   );
 }

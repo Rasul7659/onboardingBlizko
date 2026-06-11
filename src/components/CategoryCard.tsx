@@ -8,7 +8,7 @@ interface Props extends CategoryCardType {
 export default function CategoryCard({ label, image, bg, wide, className }: Props) {
   return (
     <button
-      className={`relative overflow-hidden rounded-[20px] h-[109px] p-3 flex flex-col items-start ${
+      className={`relative overflow-hidden rounded-[20px] h-[109px] md:h-[140px] pt-3 px-3 md:pt-[12px] md:px-[15px] flex flex-col items-start ${
         wide ? "col-span-2" : "col-span-1"
       } ${className ?? ""}`}
       style={{ backgroundColor: bg }}
@@ -20,7 +20,7 @@ export default function CategoryCard({ label, image, bg, wide, className }: Prop
         className="object-cover rounded-[20px]"
         unoptimized
       />
-      <span className="relative z-10 text-[12px] leading-[17px] font-medium text-black line-clamp-2 max-w-[85px]">
+      <span className="relative z-10 text-[12px] leading-[17px] md:text-[16px] md:leading-[22px] font-medium text-black line-clamp-2 max-w-[85px] md:max-w-none">
         {label}
       </span>
     </button>
