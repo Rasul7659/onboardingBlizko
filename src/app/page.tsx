@@ -17,10 +17,10 @@ export default function Home() {
   const [showCarousel, setShowCarousel] = useState(true);
 
   return (
-    <div className="min-h-screen bg-white flex flex-col">
+    <div className="h-screen md:overflow-hidden bg-white flex flex-col">
 
-      {/* ── Desktop header (≥768px) ── */}
-      <div className="hidden md:block">
+      {/* ── Desktop header (≥768px) — sticky ── */}
+      <div className="hidden md:block sticky top-0 z-50">
         <DesktopHeader />
       </div>
 

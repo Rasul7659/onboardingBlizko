@@ -169,7 +169,7 @@ export default function DesktopHeader() {
             style={{
               backgroundColor: "white",
               borderRadius: 10,
-              padding: "16px 24px",
+              padding: "10px 24px",
             }}
           >
             <input

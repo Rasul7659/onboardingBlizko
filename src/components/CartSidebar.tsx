@@ -2,7 +2,7 @@ export default function CartSidebar() {
   return (
     <div
       className="shrink-0 flex flex-col bg-white"
-      style={{ width: 380, height: "calc(100vh - 90px)", position: "sticky", top: 90 }}
+      style={{ width: 380, height: "calc(100vh - 90px)", position: "sticky", top: 0 }}
     >
       {/* Address */}
       <div style={{ paddingTop: 24 }}>
