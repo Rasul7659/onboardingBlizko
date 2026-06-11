@@ -2,8 +2,6 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import Header from "./Header";
-import SearchBar from "./SearchBar";
 import Tabbar from "./Tabbar";
 
 // ─── Icons ──────────────────────────────────────────────────────────────────
@@ -11,6 +9,13 @@ import Tabbar from "./Tabbar";
 const BackIcon = () => (
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
     <path d="M15 18L9 12L15 6" stroke="#15252B" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+  </svg>
+);
+
+const SearchIcon = () => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+    <circle cx="11" cy="11" r="7" stroke="#15252B" strokeWidth="1.5"/>
+    <path d="M16.5 16.5L21 21" stroke="#15252B" strokeWidth="1.5" strokeLinecap="round"/>
   </svg>
 );
 
@@ -39,16 +44,19 @@ const SECTIONS: { title: string; products: Product[] }[] = [
     title: "Кефир",
     products: [
       { name: "Кефир 2,5% Новая деревня", volume: "900 мл", price: 119, oldPrice: 203, badges: ["близко", "новинка"], bg: "#dff0e8" },
-      { name: "Кефир 3,2% Простоквашино", volume: "930 мл", price: 89, oldPrice: null, badges: ["близко"], bg: "#dde8f4" },
-      { name: "Кефир 1% Домик в деревне", volume: "950 мл", price: 79, oldPrice: null, badges: [], bg: "#f4dde0" },
+      { name: "Кефир 1%, ПЭТ Чабан", volume: "900 мл", price: 109, oldPrice: null, badges: [], bg: "#dde8f4" },
+      { name: "Кефир 2,5% Чабан", volume: "900 мл", price: 129, oldPrice: null, badges: [], bg: "#f4dde0" },
+      { name: "Кефир 1% Кавказский Долгожитель", volume: "900 мл", price: 129, oldPrice: null, badges: [], bg: "#f4f0dd" },
+      { name: "Кефир 2,5% Новая деревня", volume: "900 мл", price: 129, oldPrice: 203, badges: ["близко", "новинка"], bg: "#ddf0f4" },
+      { name: "Кефир 2,5% Кавказский Долгожитель...", volume: "900 мл", price: 145, oldPrice: 203, badges: ["близко", "новинка"], bg: "#ecddf4" },
     ],
   },
   {
-    title: "Молоко",
+    title: "Творог",
     products: [
-      { name: "Молоко 3,2% Простоквашино", volume: "1 л", price: 89, oldPrice: null, badges: ["близко"], bg: "#f4f0dd" },
-      { name: "Молоко 2,5% Домик в деревне", volume: "1 л", price: 95, oldPrice: 120, badges: [], bg: "#ddf0f4" },
-      { name: "Молоко отборное 3,4% ВкусВилл", volume: "1 л", price: 129, oldPrice: null, badges: ["новинка"], bg: "#ecddf4" },
+      { name: "Творог 5% Простоквашино", volume: "300 г", price: 89, oldPrice: null, badges: ["близко"], bg: "#fdf0d8" },
+      { name: "Творог 9% Домик в деревне", volume: "300 г", price: 99, oldPrice: 115, badges: [], bg: "#e8f4e0" },
+      { name: "Творог зернёный ВкусВилл", volume: "250 г", price: 119, oldPrice: null, badges: ["новинка"], bg: "#f4e0e8" },
     ],
   },
   {
@@ -70,11 +78,9 @@ function ProductCard({ product }: { product: Product }) {
 
   return (
     <div className="flex flex-col gap-1.5">
-      {/* Image area */}
       <div className="rounded-2xl overflow-hidden relative" style={{ height: 114, backgroundColor: "#f8f9fa" }}>
         <div className="absolute inset-0 rounded-2xl opacity-70" style={{ backgroundColor: product.bg }} />
 
-        {/* Badges */}
         <div className="absolute left-1.5 flex flex-col gap-px" style={{ bottom: 6 }}>
           {product.badges.includes("близко") && (
             <div className="bg-[#00b0b8] border border-white rounded-full px-1 flex items-center justify-center" style={{ height: 18 }}>
@@ -88,7 +94,6 @@ function ProductCard({ product }: { product: Product }) {
           )}
         </div>
 
-        {/* Add / counter button */}
         <div className="absolute bottom-1.5 right-1.5">
           {count === 0 ? (
             <button onClick={() => setCount(1)}>
@@ -114,7 +119,6 @@ function ProductCard({ product }: { product: Product }) {
         </div>
       </div>
 
-      {/* Info */}
       <div className="flex flex-col gap-0.5">
         <div className="flex items-baseline gap-1 flex-wrap">
           <span className="text-[14px] font-medium leading-[18px] text-[#ff2c00]">{product.price} ₽</span>
@@ -133,27 +137,70 @@ function ProductCard({ product }: { product: Product }) {
 
 export default function CatalogPage() {
   const [activeTag, setActiveTag] = useState(0);
+  const [showBanner, setShowBanner] = useState(true);
 
   return (
     <div className="min-h-screen flex justify-center bg-[#f2f3f7]">
       <div className="relative w-full max-w-[390px] bg-white min-h-screen flex flex-col">
 
-        {/* Sticky header */}
+        {/* Sticky NavBar only */}
         <div className="sticky top-0 z-40 bg-white">
-          <Header />
-          <SearchBar />
-
-          {/* Category nav bar */}
-          <div className="flex items-center justify-between px-4 bg-white border-b border-[#e2e5eb]" style={{ height: 44 }}>
+          <div className="flex items-center justify-between px-4 bg-white" style={{ height: 45 }}>
             <Link href="/" className="flex items-center justify-center w-8 h-8 shrink-0">
               <BackIcon />
             </Link>
-            <span className="text-[18px] font-medium text-[#15252b] truncate mx-2">Молочный прилавок</span>
-            <div className="w-8 h-8 shrink-0" />
+            <span className="text-[17px] font-medium text-[#15252b] truncate mx-2">
+              Кефир, сметана, творог
+            </span>
+            <button className="flex items-center justify-center w-8 h-8 shrink-0">
+              <SearchIcon />
+            </button>
           </div>
+        </div>
+
+        {/* Scrollable content */}
+        <main className="flex-1 pb-[90px] overflow-x-hidden">
+
+          {/* Guarantee banner */}
+          {showBanner && (
+            <div style={{ padding: "16px 16px 0" }}>
+              <div
+                className="flex items-center"
+                style={{
+                  backgroundColor: "#f2f3f7",
+                  borderRadius: 20,
+                  padding: 10,
+                  gap: 10,
+                  height: 62,
+                }}
+              >
+                <div
+                  className="shrink-0 flex items-center justify-center"
+                  style={{ width: 45, height: 40, fontSize: 35, lineHeight: 1 }}
+                >
+                  💸
+                </div>
+                <span
+                  className="flex-1 min-w-0 font-medium text-[#15252b]"
+                  style={{ fontSize: 14, lineHeight: "20px" }}
+                >
+                  Гарантируем возврат за любой недоставленный товар
+                </span>
+                <button
+                  className="shrink-0 rounded-full bg-[#15252b] flex items-center justify-center"
+                  style={{ width: 24, height: 24 }}
+                  onClick={() => setShowBanner(false)}
+                >
+                  <svg width="9" height="9" viewBox="0 0 9 9" fill="none">
+                    <path d="M1 1L8 8M8 1L1 8" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          )}
 
           {/* Filter tags */}
-          <div className="flex gap-1.5 px-4 py-3 overflow-x-auto scrollbar-hide bg-white">
+          <div className="flex gap-2 overflow-x-auto scrollbar-hide" style={{ padding: "16px 16px 0" }}>
             {TAGS.map((tag, i) => (
               <button
                 key={tag}
@@ -169,10 +216,8 @@ export default function CatalogPage() {
               </button>
             ))}
           </div>
-        </div>
 
-        {/* Scrollable product list */}
-        <main className="flex-1 pb-[90px] overflow-x-hidden">
+          {/* Product sections */}
           {SECTIONS.map((section, si) => (
             <div key={section.title}>
               {si > 0 && <div className="h-px bg-[#f2f3f7] mx-4" />}
