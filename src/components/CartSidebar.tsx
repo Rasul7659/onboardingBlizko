@@ -1,36 +1,55 @@
 export default function CartSidebar() {
   return (
     <div
-      className="hidden xl:flex flex-col bg-white border-l border-[#e2e5eb] shrink-0"
+      className="shrink-0 flex flex-col bg-white"
       style={{ width: 380, height: "calc(100vh - 90px)", position: "sticky", top: 90 }}
     >
       {/* Address */}
-      <div className="px-6 pt-5 pb-4 border-b border-[#e2e5eb]">
-        <button className="flex items-center gap-1.5">
-          <span className="text-[17px] font-medium text-[#15252b]">Укажите адрес</span>
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-            <path d="M3 5l4 4 4-4" stroke="#15252b" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+      <div style={{ paddingTop: 24 }}>
+        <button className="flex items-center" style={{ gap: 6 }}>
+          <span style={{ fontSize: 24, fontWeight: 600, color: "#15252b", fontFamily: "Inter, system-ui, sans-serif" }}>
+            Укажите адрес
+          </span>
+          <svg width="12" height="8" viewBox="0 0 12 7" fill="none">
+            <path d="M1 1L6 6L11 1" stroke="#15252b" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
         </button>
-        <span className="text-[14px] text-black/40 mt-0.5 block">г.Махачкала</span>
+        <p style={{ fontSize: 12, fontWeight: 400, color: "#000", fontFamily: "Inter, system-ui, sans-serif", marginTop: 6 }}>
+          г.Махачкала
+        </p>
       </div>
 
-      {/* Empty state */}
-      <div className="flex-1 flex flex-col items-center justify-center gap-4 px-6">
-        {/* Mascot — cat emoji placeholder */}
-        <div className="text-[72px] leading-none select-none" style={{ filter: "grayscale(0)" }}>🐱</div>
-        <p className="text-[14px] text-center leading-[20px] text-[#15252b]">
+      {/* Mascot + empty text */}
+      <div className="flex-1 flex flex-col items-center justify-center" style={{ gap: 12 }}>
+        {/* Mascot placeholder — black cat with teal glasses emoji */}
+        <div style={{ width: 120, height: 168, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 80 }}>
+          🐱
+        </div>
+        <p style={{
+          fontSize: 16, fontWeight: 400, color: "#15252b",
+          fontFamily: "Inter, system-ui, sans-serif",
+          textAlign: "center", lineHeight: "22px",
+        }}>
           Ломтик ждет пока<br />вы добавите товары
         </p>
       </div>
 
-      {/* Cart footer */}
+      {/* Footer */}
       <div
-        className="flex items-center justify-between px-6 bg-white border-t border-[#e2e5eb]"
-        style={{ height: 54 }}
+        className="flex items-center justify-between shrink-0"
+        style={{
+          height: 54, padding: "0 16px",
+          backgroundColor: "#f2f3f7",
+          borderRadius: 16,
+          margin: "0 0 0 0",
+        }}
       >
-        <span className="text-[14px] text-black/40">Добавьте товар в корзину</span>
-        <span className="text-[15px] font-semibold text-[#15252b]">0 ₽</span>
+        <span style={{ fontSize: 18, fontWeight: 500, color: "#15252b", fontFamily: "'PP Right Grotesk', 'Arial', system-ui, sans-serif" }}>
+          Добавьте товар в корзину
+        </span>
+        <span style={{ fontSize: 18, fontWeight: 500, color: "#15252b", fontFamily: "'PP Right Grotesk', 'Arial', system-ui, sans-serif" }}>
+          0 ₽
+        </span>
       </div>
     </div>
   );

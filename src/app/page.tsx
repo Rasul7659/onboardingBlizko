@@ -24,38 +24,42 @@ export default function Home() {
         <DesktopHeader />
       </div>
 
-      {/* ── Mobile header (< 768px) ── */}
+      {/* ── Mobile header (<768px) ── */}
       <div className="md:hidden sticky top-0 z-40 bg-white">
         <Header />
         <SearchBar />
       </div>
 
       {/* ── Desktop layout (≥768px) ── */}
-      <div className="hidden md:flex flex-1" style={{ minHeight: 0 }}>
-        {/* Main content */}
-        <div className="flex-1 overflow-y-auto">
-          <div className="mx-auto" style={{ maxWidth: 1580, padding: "18px 40px 40px" }}>
+      <div className="hidden md:flex flex-1 overflow-y-auto" style={{ minHeight: 0 }}>
+        <div
+          className="flex flex-1 mx-auto w-full"
+          style={{ padding: "18px 170px 40px", gap: 50 }}
+        >
+          {/* Main column: carousel+stories + products */}
+          <div className="flex-1 min-w-0 flex flex-col" style={{ gap: 20 }}>
 
             {/* Carousel + Stories */}
-            <div className="flex gap-4 mb-5">
+            <div className="flex" style={{ gap: 16 }}>
+              {/* Carousel takes remaining width after 358px stories */}
               <div className="flex-1 min-w-0">
                 <PromoCarousel desktop onClose={() => setShowCarousel(false)} />
               </div>
               <StoriesPanel />
             </div>
 
-            {/* Product sections */}
+            {/* Nav tabs + products */}
             <NavTabs />
-            <div className="bg-white flex flex-col gap-5 pt-4">
+            <div className="flex flex-col" style={{ gap: 20 }}>
               {categorySections.map((section) => (
                 <CategorySection key={section.title} section={section} />
               ))}
             </div>
           </div>
-        </div>
 
-        {/* Cart sidebar */}
-        <CartSidebar />
+          {/* Cart sidebar — sticky, 380px */}
+          <CartSidebar />
+        </div>
       </div>
 
       {/* ── Mobile layout (<768px) ── */}
