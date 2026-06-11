@@ -7,17 +7,24 @@ import { useState, useRef, useEffect, useCallback } from "react";
 const SWIPE_THRESHOLD = 80;
 const FLY_MS = 380;
 
-// Card proportions derived from Figma (375px canvas, 16px side padding)
-// front width = innerW, middle = front×(349/357), back = front×(340/357)
-// height ≈ width × 0.681, top offsets ≈ innerW × (9/357) and (20/357)
-const ASPECT = 243 / 357;
-function buildDepths(vw: number) {
-  const innerW = vw - 32; // 16px padding each side
-  const fw = innerW;
+// Card proportions derived from Figma.
+// Mobile (375px): 16px side padding, aspect ≈ 0.681, top offsets 0/9/20 of innerW.
+// Desktop (1920px): no padding, aspect ≈ 0.606 (470/776), top offsets 0/15/30 of innerW.
+function buildDepths(innerW: number) {
+  const isDesktop = innerW > 500;
+  if (isDesktop) {
+    const h = Math.round(innerW * (470 / 776));
+    return [
+      { width: Math.round(innerW * (752 / 776)), height: h, top: 0 },
+      { width: Math.round(innerW * (764 / 776)), height: h, top: Math.round(innerW * (15 / 776)) },
+      { width: innerW,                           height: h, top: Math.round(innerW * (30 / 776)) },
+    ] as const;
+  }
+  const aspect = 243 / 357;
   return [
-    { width: Math.round(fw * (340 / 357)), height: Math.round(fw * (340 / 357) * ASPECT), top: 0 },
-    { width: Math.round(fw * (349 / 357)), height: Math.round(fw * (349 / 357) * ASPECT), top: Math.round(fw * (9 / 357)) },
-    { width: fw,                           height: Math.round(fw * ASPECT),                top: Math.round(fw * (20 / 357)) },
+    { width: Math.round(innerW * (340 / 357)), height: Math.round(innerW * (340 / 357) * aspect), top: 0 },
+    { width: Math.round(innerW * (349 / 357)), height: Math.round(innerW * (349 / 357) * aspect), top: Math.round(innerW * (9 / 357)) },
+    { width: innerW,                           height: Math.round(innerW * aspect),               top: Math.round(innerW * (20 / 357)) },
   ] as const;
 }
 
@@ -136,16 +143,22 @@ function getDepth(cardIdx: number, topIdx: number, total: number): 0 | 1 | 2 {
 
 // ─── Main component ───────────────────────────────────────────────────────────
 
-export default function PromoCarousel({ onClose }: { onClose?: () => void }) {
-  const [vw, setVw] = useState(390);
-  useEffect(() => {
-    const update = () => setVw(window.innerWidth);
-    update();
-    window.addEventListener("resize", update);
-    return () => window.removeEventListener("resize", update);
-  }, []);
+export default function PromoCarousel({ onClose, desktop }: { onClose?: () => void; desktop?: boolean }) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [innerW, setInnerW] = useState(desktop ? 776 : 358);
 
-  const DEPTHS = buildDepths(vw);
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const ro = new ResizeObserver(([entry]) => {
+      const pad = desktop ? 0 : 32;
+      setInnerW(Math.max(100, Math.round(entry.contentRect.width) - pad));
+    });
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [desktop]);
+
+  const DEPTHS = buildDepths(innerW);
 
   const [cards] = useState(ALL_CARDS.map(c => c.id));
   const [topIdx, setTopIdx] = useState(0);
@@ -227,7 +240,7 @@ export default function PromoCarousel({ onClose }: { onClose?: () => void }) {
     : 0;
 
   return (
-    <div style={{ padding: "0 16px" }}>
+    <div ref={containerRef} style={desktop ? {} : { padding: "0 16px" }}>
       {/* overflow:hidden clips cards during swipe, borderRadius clips at rounded corners */}
       <div style={{
         borderRadius: 20,
